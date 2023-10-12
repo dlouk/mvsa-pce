@@ -133,33 +133,7 @@ class SensitivityAdaptivePCE():
             # compute pce basis and coefficients with reduced multi-index set
             pce.construct_basis()
             pce.compute_coefficients()
-        # re-order multi-indices and coefficients
-        # coeffs = pce.coefficients
-        # midx = np.array(pce.multi_index_set)
-        # coeffs_aggr = np.sum(np.abs(coeffs), axis=1)
-        # order_idx = np.flip(np.argsort(coeffs_aggr))
-        # midx_ord = midx[order_idx, :].tolist()
-        # pce.set_multi_index_set(midx_ord)
-        # pce.construct_basis()
-        # pce.compute_coefficients()
         return pce
         
-    
-    # def construct_ordered_augmented_pce(self):
-    #     # compute augmented pce
-    #     pce = self.construct_augmented_pce()
-    #     # get coefficients and multi-index set
-    #     coeffs = pce.coefficients
-    #     midx = np.array(pce.multi_index_set)
-    #     # compute aggregated coefficients
-    #     coeffs_aggr = np.sum(np.abs(coeffs), axis=1)
-    #     # find ordering according from maximum to minimum aggr. coeff.
-    #     order_idx = np.flip(np.argsort(coeffs_aggr))
-    #     # order multiindices and coefficients according to aggr.coeff.
-    #     midx_ord = midx[order_idx, :].tolist()
-    #     pce.set_multi_index_set(midx_ord)
-    #     pce.construct_basis()
-    #     pce.compute_coefficients()
-    #     return pce
         
         

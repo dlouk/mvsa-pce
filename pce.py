@@ -2,12 +2,12 @@
 """
 Created on Fri Feb  3 18:26:39 2023
 
-@author: D. Loukrezis
+@author: z004dp6c
 """
 
 import openturns as ot
 import numpy as np
-
+import scipy as sp
 
 class PolynomialChaosExpansion():
     '''
@@ -23,17 +23,11 @@ class PolynomialChaosExpansion():
             self.pdf = chaos_algo_data.getDistribution()
         else:    
             self.pdf = pdf
-        self.num_inputs = pdf.getDimension()
+        self.num_inputs = self.pdf.getDimension()
         self.num_outputs = exp_design_out.shape[1]
         self.num_samples = exp_design_out.shape[0]
         self.exp_design_inputs = exp_design_in
         self.exp_design_outputs = exp_design_out
-        
-        # As initialization, compute a PCE of 1st order polynomials only, i.e., 
-        # a total degree PCE with total degree equal to 1. It is inexpensive to 
-        # compute, we will most probably have to compute it either way, and we 
-        # get some helpful OpenTURNS functions to be used later, most 
-        # importantly, the Transformation function.
         
         # get enumerate function for single and multi-indices
         self.enumerate_function = ot.LinearEnumerateFunction(self.num_inputs)
@@ -49,32 +43,9 @@ class PolynomialChaosExpansion():
         self.product_basis = ot.OrthogonalProductPolynomialFactory(
                         self.polynomial_collection, self.enumerate_function)
         
-        # compute total degree PCE with total degree equal to 1
-        total_degree = 1 
-        basis_size = self.enumerate_function.getStrataCumulatedCardinal(
-                                                                total_degree) 
-        adaptive_strategy = ot.FixedStrategy(self.product_basis, basis_size) 
-        projection_strategy = ot.LeastSquaresStrategy()
-        chaos_algo = ot.FunctionalChaosAlgorithm(exp_design_in[0:1,:], 
-                                                 exp_design_out[0:1,:], 
-                                                 pdf, adaptive_strategy, 
-                                                 projection_strategy)
-        chaos_algo.run()
-        chaos_result = chaos_algo.getResult()
-        
-        # get the transformation function to be applied for standardization
-        # of the input data
-        self.transformation = chaos_result.getTransformation()
-        
-        # get the single and multi-indices corresponding to the 1st order PCE
-        self.single_index_set = np.array(chaos_result.getIndices()).tolist()
-        self.multi_index_set = [list(self.enumerate_function(idx)) 
-                                for idx in self.single_index_set]
-        
-        # get polynomial basis corresponding to the 1st order PCE
-        self.basis = chaos_result.getReducedBasis()
-        self.num_polynomials = self.basis.getSize()
-        
+        self.transformation = ot.DistributionTransformation(
+                                self.pdf, self.product_basis.getMeasure())
+    
     def set_multi_index_set(self, multi_index_set):
         self.multi_index_set = multi_index_set
         self.single_index_set = [self.enumerate_function.inverse(idx) 
@@ -116,9 +87,9 @@ class PolynomialChaosExpansion():
         self.compute_design_matrix()
         # compute PCE coefficients using least squares regression
         self.coefficients, _, _, singular_values = np.linalg.lstsq(
-                                                     self.design_matrix, 
-                                                     self.exp_design_outputs,
-                                                     rcond=None)
+                                                      self.design_matrix, 
+                                                      self.exp_design_outputs,
+                                                      rcond=None)
         self.condition_number = singular_values[0] / singular_values[-1]
     
     def predict(self, design_in):

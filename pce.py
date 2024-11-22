@@ -55,7 +55,8 @@ class PolynomialChaosExpansion():
                                                                 total_degree) 
         adaptive_strategy = ot.FixedStrategy(self.product_basis, basis_size) 
         projection_strategy = ot.LeastSquaresStrategy()
-        chaos_algo = ot.FunctionalChaosAlgorithm(exp_design_in, exp_design_out, 
+        chaos_algo = ot.FunctionalChaosAlgorithm(exp_design_in[0:1,:], 
+                                                 exp_design_out[0:1,:], 
                                                  pdf, adaptive_strategy, 
                                                  projection_strategy)
         chaos_algo.run()
@@ -73,18 +74,6 @@ class PolynomialChaosExpansion():
         # get polynomial basis corresponding to the 1st order PCE
         self.basis = chaos_result.getReducedBasis()
         self.num_polynomials = self.basis.getSize()
-        
-        # get PCE coefficients corresponding to the 1st order PCE
-        self.coefficients = np.array(chaos_result.getCoefficients())
-        
-        # compute design matrix corresponding to the 1st order PCE and the 
-        # given experimental design
-        self.design_matrix = np.zeros([self.num_samples, 
-                                       self.num_polynomials])
-        exp_design_inputs_tf = self.transformation(self.exp_design_inputs)
-        for j in range(self.num_polynomials):
-            self.design_matrix[:, j] = np.array(
-                self.basis[j](exp_design_inputs_tf)).flatten()
         
     def set_multi_index_set(self, multi_index_set):
         self.multi_index_set = multi_index_set

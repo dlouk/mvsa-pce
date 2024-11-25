@@ -43,6 +43,7 @@ class PolynomialChaosExpansion():
         self.product_basis = ot.OrthogonalProductPolynomialFactory(
                         self.polynomial_collection, self.enumerate_function)
         
+        # get transformation function - very important!
         self.transformation = ot.DistributionTransformation(
                                 self.pdf, self.product_basis.getMeasure())
     
@@ -74,10 +75,10 @@ class PolynomialChaosExpansion():
         # transform input data
         design_in_tf = np.array(self.transformation(design_in))
         # compute basis evaluation matrix
-        eval_matrix = np.empty([n_samples, self.num_polynomials])
-        for j in range(self.num_polynomials):
-            eval_matrix[:,j] = np.array(self.basis[j](design_in_tf)).flatten()
-        return eval_matrix
+        eval_matrix = np.array([self.basis[j](design_in_tf) 
+                                for j in range(self.num_polynomials)])
+        eval_matrix = np.reshape(eval_matrix, eval_matrix.shape[:-1])
+        return eval_matrix.T
     
     def compute_design_matrix(self):
         self.design_matrix = self.evaluate_basis(self.exp_design_inputs)
@@ -131,9 +132,10 @@ class PolynomialChaosExpansion():
         '''
         sobol_t = np.empty([self.num_inputs, self.num_outputs])
         variance = self.compute_variance()
+        mis = np.array(self.multi_index_set)
         for i in range(self.num_inputs):
             # we want all multi-indices where the i-th index is NOT zero  
-            idx_column_i = np.array(self.multi_index_set)[:, i]
+            idx_column_i = mis[:,i] 
             non_zero_rows = np.asarray(np.where(idx_column_i!=0)).flatten()
             partial_variance = np.sum(
                                 np.square(self.coefficients[non_zero_rows]),

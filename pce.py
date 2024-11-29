@@ -77,7 +77,8 @@ class PolynomialChaosExpansion():
         # compute basis evaluation matrix
         eval_matrix = np.array([self.basis[j](design_in_tf) 
                                 for j in range(self.num_polynomials)])
-        eval_matrix = np.reshape(eval_matrix, eval_matrix.shape[:-1])
+        # remove superficial dimension
+        eval_matrix = np.squeeze(eval_matrix)
         return eval_matrix.T
     
     def compute_design_matrix(self):

@@ -1,6 +1,6 @@
 # Multivariate sensitivity adaptive polynomial chaos expansion (MVSA PCE)
 
-This repository contains the Python based implementation of the Multivariate Sensitivity Adaptive (MVSA) Polynomial Chaos Expansion (PCE) method, which is described in the paper "Multivariate sensitivity adaptive polynomial chaos expansion for vector valued surrogate modeling" by D. Loukrezis, E. Diehl, and H. De Gersem, available at https://arxiv.org/abs/2310.09871. Please cite this work, in case you use and/or refer to the MVSA PCE method and/or related software.
+This repository contains the Python based implementation of the Multivariate Sensitivity Adaptive (MVSA) Polynomial Chaos Expansion (PCE) method, which is described in the paper "Multivariate sensitivity-adaptive polynomial chaos expansion for high-dimensional surrogate modeling and uncertainty quantification" by D. Loukrezis, E. Diehl, and H. De Gersem, available at https://doi.org/10.1016/j.apm.2024.115746. Please cite this work, in case you use and/or refer to the MVSA PCE method and/or related software.
 
 @article{loukrezis2025multivariate,
   title={Multivariate sensitivity-adaptive polynomial chaos expansion for high-dimensional surrogate modeling and uncertainty quantification},

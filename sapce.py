@@ -97,7 +97,7 @@ class SensitivityAdaptivePCE():
             if num_terms >= len(self.pce.exp_design_inputs):
                 if(termination_info):
                     print("Adaptive basis construction terminated:" 
-                        + " basis cardinality reached experimental desing size.")
+                        + " basis cardinality reached experimental design size.")
                 break
 
 

@@ -21,3 +21,5 @@ C++/Python library.
 simulation, https://arxiv.org/abs/1501.05242 
 
 ---
+
+Please note that the induction motor example uses version 1.1.0 of the gym-electric-motor package. Unfortunately, later versions result in errors.

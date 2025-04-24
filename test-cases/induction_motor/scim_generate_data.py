@@ -29,17 +29,17 @@ plt.rcParams.update(
 legend_font_size=12
 
 # list of seeds
-seed_list = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
+seed_list = [1] #np.arange(1,11).astype(int).tolist()
 
 # num. samples
 nsamples = 1500
 
 # strings to be used for saving data
-folder_str = 'scim_data_DL/'
+folder_str = 'scim_data/'
 txt_str =  '.txt'
 inputs_str = 'inputs'
 outputs_str = 'outputs'
-seed_str = '_seed='
+seed_str = '_seed'
  
 if __name__ == '__main__':
     

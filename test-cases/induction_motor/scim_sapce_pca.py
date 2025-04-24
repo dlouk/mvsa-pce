@@ -23,12 +23,12 @@ sys.path.append('../../')
 from sapce import SensitivityAdaptivePCE
 
 # list of seeds
-seed_list = np.arange(1,11).astype(int).tolist()
+seed_list = [1] #np.arange(1,11).astype(int).tolist()
 
 # strings for loading data
 data_folder = 'scim_data/'
-input_file = 'design_inputs_seed'
-output_file = 'drive_torque_seed'
+input_file = 'inputs_seed'
+output_file = 'outputs_seed'
 nsamples = 1500
  
 
@@ -36,14 +36,12 @@ if __name__ == '__main__':
     #%% iterate over seeds
     for seed in seed_list:
         # get inputs for given seed
-        fname_inputs = data_folder + input_file + str(seed) + '_n' +\
-                       str(nsamples) + '.txt'
+        fname_inputs = data_folder + input_file + str(seed) + '.txt'
         input_data = np.genfromtxt(fname_inputs)
         
         
         # get outputs for given seed
-        fname_outputs = data_folder + output_file + str(seed) + '_n' +\
-                       str(nsamples) + '.txt'
+        fname_outputs = data_folder + output_file + str(seed) + '.txt'
         output_data = np.genfromtxt(fname_outputs)
         
         # test data will always be the last 1000 data points
